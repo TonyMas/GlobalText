@@ -11908,7 +11908,29 @@ a.anchor-link {
 <h1 id="Text-processing-in-global-world">Text processing in global world<a class="anchor-link" href="#Text-processing-in-global-world">&#182;</a></h1>
 </div>
 </div>
-</div></section></section><section><section>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This notebook: <a href="https://github.com/TonyMas/GlobalText/">https://github.com/TonyMas/GlobalText/</a><br>
+This presentation: <a href="https://tonymas.github.io/GlobalText/">https://tonymas.github.io/GlobalText/</a><br></p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Anton Masalovich<br>
+Help people scale ML models to more languages in Microsoft.<br>
+Background in document recognition and computer vision.<br>
+<a href="https://www.linkedin.com/in/masalovich/">https://www.linkedin.com/in/masalovich/</a></p>
+
+</div>
+</div>
+</div></div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -11943,15 +11965,16 @@ a.anchor-link {
 <span class="kn">import</span> <span class="nn">string</span>
 
 <span class="k">class</span> <span class="nc">WordCounterV1</span><span class="p">:</span>
-    <span class="c1"># Translation table to remove punctuation</span>
-    <span class="n">punctuationTranslation</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Translation table to remove punctuation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">punctuationTranslation</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">)</span>
     
     <span class="k">def</span> <span class="nf">CountWords</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">text</span> <span class="p">):</span>
         <span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
         <span class="c1"># Split text to words by spaces</span>
         <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">):</span>
             <span class="c1"># Remove all punctuation</span>
-            <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">WordCounterV1</span><span class="o">.</span><span class="n">punctuationTranslation</span><span class="p">)</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">punctuationTranslation</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="c1"># Skip empty words</span>
                 <span class="k">continue</span>
@@ -12280,28 +12303,15 @@ Other, not assigned: Cn</p>
 </div>
 
 </div></div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Let's build unicode sets to work with</p>
-
-</div>
-</div>
-</div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">unicodedata</span>
-
 <span class="k">def</span> <span class="nf">calculateUnicodeSets</span><span class="p">():</span>
-    <span class="n">punctuation</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">letters</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">numbers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">spaces</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">control</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">punctuation</span><span class="p">,</span> <span class="n">letters</span><span class="p">,</span> <span class="n">numbers</span><span class="p">,</span> <span class="n">spaces</span><span class="p">,</span> <span class="n">control</span> <span class="o">=</span> \
+        <span class="nb">set</span><span class="p">(),</span> <span class="nb">set</span><span class="p">(),</span> <span class="nb">set</span><span class="p">(),</span> <span class="nb">set</span><span class="p">(),</span> <span class="nb">set</span><span class="p">()</span>
     <span class="c1"># We go through whole range of possible Unicode characters</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mh">0x110000</span><span class="p">):</span>
         <span class="n">char</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
@@ -12309,7 +12319,8 @@ Other, not assigned: Cn</p>
         <span class="c1"># Punctuation is everything in P* category</span>
         <span class="k">if</span><span class="p">(</span> <span class="n">category</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">)</span> <span class="p">):</span>
             <span class="n">punctuation</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">char</span> <span class="p">)</span>
-        <span class="c1"># For our goal both letters (L*) and mark signs (M*) will be considered as letters</span>
+        <span class="c1"># For our goal both letters (L*) and mark signs (M*)</span>
+        <span class="c1"># will be considered as letters</span>
         <span class="k">elif</span><span class="p">(</span> <span class="n">category</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">category</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;M&#39;</span><span class="p">)</span> <span class="p">):</span>
             <span class="n">letters</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">char</span> <span class="p">)</span>
         <span class="c1"># Nd and Nl goes to numbers (No is not exactly digits)</span>
@@ -12321,15 +12332,9 @@ Other, not assigned: Cn</p>
         <span class="c1"># We will need control (Cc) and format (Cf) characters a little bit later</span>
         <span class="k">elif</span><span class="p">(</span> <span class="n">category</span> <span class="o">==</span> <span class="s1">&#39;Cc&#39;</span> <span class="ow">or</span> <span class="n">category</span> <span class="o">==</span> <span class="s1">&#39;Cf&#39;</span> <span class="p">):</span>
             <span class="n">control</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">char</span> <span class="p">)</span>
-    
     <span class="c1"># TAB, CR and LF are in Cc category, but we will treat them as spaces</span>
-    <span class="n">spaces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="p">)</span>
-    <span class="n">spaces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="p">)</span>
-    <span class="n">spaces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="p">)</span>
-    <span class="n">control</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="p">)</span>
-    <span class="n">control</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="p">)</span>
-    <span class="n">control</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="p">)</span>
-    
+    <span class="n">spaces</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="p">[</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">]</span> <span class="p">)</span>
+    <span class="n">control</span><span class="o">.</span><span class="n">difference_update</span><span class="p">(</span>  <span class="p">[</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">]</span>  <span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">punctuation</span><span class="p">,</span> <span class="n">letters</span><span class="p">,</span> <span class="n">numbers</span><span class="p">,</span> <span class="n">spaces</span><span class="p">,</span> <span class="n">control</span><span class="p">)</span>
 </pre></div>
 
@@ -12337,10 +12342,10 @@ Other, not assigned: Cn</p>
 </div>
 </div>
 
-</div></div><div class="fragment">
+</div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">punctuation</span><span class="p">,</span> <span class="n">letters</span><span class="p">,</span> <span class="n">numbers</span><span class="p">,</span> <span class="n">spaces</span><span class="p">,</span> <span class="n">control</span><span class="p">)</span> <span class="o">=</span> <span class="n">calculateUnicodeSets</span><span class="p">()</span>
@@ -12363,7 +12368,7 @@ Why we need punctuation, we already have string.punctuation?</p>
 </div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">string</span><span class="o">.</span><span class="n">punctuation</span>
@@ -12379,7 +12384,7 @@ Why we need punctuation, we already have string.punctuation?</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[10]:</div>
+<div class="prompt output_prompt">Out[54]:</div>
 
 
 
@@ -12439,7 +12444,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 </div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">numbers</span><span class="p">))</span>
@@ -12455,7 +12460,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[13]:</div>
+<div class="prompt output_prompt">Out[12]:</div>
 
 
 
@@ -12481,7 +12486,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 </div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">spaces</span><span class="p">)</span>
@@ -12497,7 +12502,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[14]:</div>
+<div class="prompt output_prompt">Out[13]:</div>
 
 
 
@@ -12514,7 +12519,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 </div></div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">spaces</span><span class="p">))</span>
@@ -12530,7 +12535,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[15]:</div>
+<div class="prompt output_prompt">Out[14]:</div>
 
 
 
@@ -12556,7 +12561,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 </div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span>
@@ -12572,7 +12577,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[16]:</div>
+<div class="prompt output_prompt">Out[15]:</div>
 
 
 
@@ -12598,7 +12603,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 </div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
@@ -12607,14 +12612,27 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 <span class="k">class</span> <span class="nc">WordCounterV2</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Get all our unicode sets</span>
-        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">punctuation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">letters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">numbers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">)</span> <span class="o">=</span> <span class="n">calculateUnicodeSets</span><span class="p">()</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">punctuation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">letters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">numbers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">)</span> <span class="o">=</span> \
+            <span class="n">calculateUnicodeSets</span><span class="p">()</span>
         <span class="c1"># Translation table to remove punctuation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">punctuationTranslation</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">punctuation</span><span class="p">))</span>
         <span class="c1"># Translation table to remove control characters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">controlTranslation</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">))</span>
         <span class="c1"># Regex to find all whitespaces</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">whitespacesRegex</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">))</span>
-    
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">WordCounterV2</span><span class="p">(</span><span class="n">WordCounterV2</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">CountWords</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">text</span> <span class="p">):</span>
         <span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
         <span class="c1"># Remove control characters from string</span>
@@ -12626,7 +12644,8 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="c1"># Skip empty words</span>
                 <span class="k">continue</span>
-            <span class="c1"># Creating set of letters from our word, that way it will be easier to compare with letters and numbers</span>
+            <span class="c1"># Creating set of letters from our word</span>
+            <span class="c1"># that way it will be easier to compare with letters and numbers</span>
             <span class="n">wordSet</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
             <span class="c1"># Words that consist only of letters count as words</span>
             <span class="k">if</span> <span class="n">wordSet</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">letters</span> <span class="p">):</span>
@@ -12645,7 +12664,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 </div>
 </div>
 
-</div></div></section></section><section><section>
+</div></section></section><section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[18]:</div>
@@ -12775,7 +12794,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 </div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">str1</span> <span class="o">=</span> <span class="s1">&#39;Tôi chỉ cần văn bản với dấu phụ&#39;</span>
@@ -12789,7 +12808,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 </div></div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">count1</span> <span class="o">=</span> <span class="n">wordCounter</span><span class="o">.</span><span class="n">CountWords</span><span class="p">(</span> <span class="n">str1</span> <span class="p">)</span>
@@ -12803,7 +12822,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 </div></div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">count1</span> <span class="o">+</span> <span class="n">count2</span>
@@ -12819,7 +12838,7 @@ You may treat different Number categories (Nd, Nl, No) differently, depending on
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[28]:</div>
+<div class="prompt output_prompt">Out[23]:</div>
 
 
 
@@ -12869,7 +12888,7 @@ There are several ways to write similiar text in Unicode.</p>
 </div></div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">str1</span><span class="p">))</span>
@@ -12885,7 +12904,7 @@ There are several ways to write similiar text in Unicode.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[29]:</div>
+<div class="prompt output_prompt">Out[24]:</div>
 
 
 
@@ -12902,7 +12921,7 @@ There are several ways to write similiar text in Unicode.</p>
 </div></div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">str2</span><span class="p">))</span>
@@ -12918,7 +12937,7 @@ There are several ways to write similiar text in Unicode.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[30]:</div>
+<div class="prompt output_prompt">Out[25]:</div>
 
 
 
@@ -12963,7 +12982,7 @@ There are several ways to write similiar text in Unicode.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="normalization.jpg" alt="normalization.jpg"></p>
+<p><img src="docs\normalization.jpg" alt="normalization.jpg"></p>
 
 </div>
 </div>
@@ -12980,7 +12999,7 @@ We will stick to NFKD in this example.</p>
 </div></div></section></section><section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">unicodedata</span>
@@ -12996,7 +13015,7 @@ We will stick to NFKD in this example.</p>
 </div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">str1Normalized</span><span class="p">))</span>
@@ -13012,7 +13031,7 @@ We will stick to NFKD in this example.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[32]:</div>
+<div class="prompt output_prompt">Out[27]:</div>
 
 
 
@@ -13029,7 +13048,7 @@ We will stick to NFKD in this example.</p>
 </div></div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">str2Normalized</span><span class="p">))</span>
@@ -13045,7 +13064,7 @@ We will stick to NFKD in this example.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[33]:</div>
+<div class="prompt output_prompt">Out[28]:</div>
 
 
 
@@ -13059,10 +13078,10 @@ We will stick to NFKD in this example.</p>
 </div>
 </div>
 
-</div>
+</div></div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">str1</span> <span class="o">==</span> <span class="n">str2</span>
@@ -13078,7 +13097,7 @@ We will stick to NFKD in this example.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[34]:</div>
+<div class="prompt output_prompt">Out[29]:</div>
 
 
 
@@ -13092,10 +13111,10 @@ We will stick to NFKD in this example.</p>
 </div>
 </div>
 
-</div>
+</div></div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">str1Normalized</span> <span class="o">==</span> <span class="n">str2Normalized</span>
@@ -13111,7 +13130,7 @@ We will stick to NFKD in this example.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[35]:</div>
+<div class="prompt output_prompt">Out[30]:</div>
 
 
 
@@ -13125,10 +13144,10 @@ We will stick to NFKD in this example.</p>
 </div>
 </div>
 
-</div>
+</div></div></section></section><section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
@@ -13137,14 +13156,27 @@ We will stick to NFKD in this example.</p>
 <span class="k">class</span> <span class="nc">WordCounterV3</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Get all our unicode sets</span>
-        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">punctuation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">letters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">numbers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">)</span> <span class="o">=</span> <span class="n">calculateUnicodeSets</span><span class="p">()</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">punctuation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">letters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">numbers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">)</span> <span class="o">=</span> \
+            <span class="n">calculateUnicodeSets</span><span class="p">()</span>
         <span class="c1"># Translation table to remove punctuation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">punctuationTranslation</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">punctuation</span><span class="p">))</span>
         <span class="c1"># Translation table to remove control characters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">controlTranslation</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">))</span>
         <span class="c1"># Regex to find all whitespaces</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">whitespacesRegex</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">))</span>
-    
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">WordCounterV3</span><span class="p">(</span><span class="n">WordCounterV3</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">CountWords</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">text</span> <span class="p">):</span>
         <span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
         <span class="c1"># Normalize text</span>
@@ -13158,7 +13190,8 @@ We will stick to NFKD in this example.</p>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="c1"># Skip empty words</span>
                 <span class="k">continue</span>
-            <span class="c1"># Creating set of letters from our word, that way it will be easier to compare with letters and numbers</span>
+            <span class="c1"># Creating set of letters from our word,</span>
+            <span class="c1"># that way it will be easier to compare with letters and numbers</span>
             <span class="n">wordSet</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
             <span class="c1"># Words that consist only of letters count as words</span>
             <span class="k">if</span> <span class="n">wordSet</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">letters</span> <span class="p">):</span>
@@ -13177,10 +13210,10 @@ We will stick to NFKD in this example.</p>
 </div>
 </div>
 
-</div>
+</div></section></section><section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">wordCounter</span> <span class="o">=</span> <span class="n">WordCounterV3</span><span class="p">()</span>
@@ -13197,7 +13230,7 @@ We will stick to NFKD in this example.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[38]:</div>
+<div class="prompt output_prompt">Out[33]:</div>
 
 
 
@@ -13211,7 +13244,7 @@ We will stick to NFKD in this example.</p>
 </div>
 </div>
 
-</div>
+</div><div class="fragment">
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -13220,10 +13253,10 @@ We will stick to NFKD in this example.</p>
 
 </div>
 </div>
-</div>
+</div></div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">count1Normalized</span> <span class="o">=</span> <span class="n">wordCounter</span><span class="o">.</span><span class="n">CountWords</span><span class="p">(</span> <span class="n">str1</span> <span class="p">)</span>
@@ -13234,10 +13267,10 @@ We will stick to NFKD in this example.</p>
 </div>
 </div>
 
-</div>
+</div></div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">count1Normalized</span> <span class="o">+</span> <span class="n">count2Normalized</span>
@@ -13253,7 +13286,7 @@ We will stick to NFKD in this example.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[40]:</div>
+<div class="prompt output_prompt">Out[35]:</div>
 
 
 
@@ -13274,7 +13307,7 @@ We will stick to NFKD in this example.</p>
 </div>
 </div>
 
-</div>
+</div></div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -13283,10 +13316,10 @@ We will stick to NFKD in this example.</p>
 
 </div>
 </div>
-</div>
+</div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">count1Normalized</span> <span class="o">+</span> <span class="n">count2Normalized</span> <span class="o">+</span> <span class="n">count1</span> <span class="o">+</span> <span class="n">count2</span>
@@ -13302,7 +13335,7 @@ We will stick to NFKD in this example.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[41]:</div>
+<div class="prompt output_prompt">Out[36]:</div>
 
 
 
@@ -13331,17 +13364,16 @@ We will stick to NFKD in this example.</p>
 </div>
 </div>
 
-</div>
+</div></div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>If you use predefined dictionary, make sure that it was created with the same type of normalization.</strong><br>
-<strong>The same goes to word embeddings, n-grams and any pre-trained text model.</strong></p>
-
+<h3><strong>If you use predefined dictionary, make sure that it was created with the same type of normalization.</strong><br></h3>
+<h4 id="The-same-goes-to-word-embeddings,-n-grams-and-any-pre-trained-text-model."><strong>The same goes to word embeddings, n-grams and any pre-trained text model.</strong><a class="anchor-link" href="#The-same-goes-to-word-embeddings,-n-grams-and-any-pre-trained-text-model.">&#182;</a></h4>
 </div>
 </div>
-</div>
+</div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -13349,7 +13381,7 @@ We will stick to NFKD in this example.</p>
 <h2 id="Deeper-into-NLP-territory">Deeper into NLP territory<a class="anchor-link" href="#Deeper-into-NLP-territory">&#182;</a></h2>
 </div>
 </div>
-</div>
+</div><div class="fragment">
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -13358,7 +13390,7 @@ We will stick to NFKD in this example.</p>
 
 </div>
 </div>
-</div>
+</div></div><div class="fragment">
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -13367,10 +13399,10 @@ We will stick to NFKD in this example.</p>
 
 </div>
 </div>
-</div>
+</div></div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[47]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">wordCounter</span><span class="o">.</span><span class="n">CountWords</span><span class="p">(</span><span class="s2">&quot;Mr. O&#39;Neill thinks that the boys&#39; stories about Chile&#39;s capital aren&#39;t amusing.&quot;</span><span class="p">)</span>
@@ -13386,7 +13418,7 @@ We will stick to NFKD in this example.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[47]:</div>
+<div class="prompt output_prompt">Out[37]:</div>
 
 
 
@@ -13411,26 +13443,43 @@ We will stick to NFKD in this example.</p>
 </div>
 </div>
 
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="k">import</span> <span class="n">word_tokenize</span>
-</pre></div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Tokenization">Tokenization<a class="anchor-link" href="#Tokenization">&#182;</a></h3><p>Given a character sequence and a defined document unit, tokenization is the task of chopping it up into pieces, called tokens, perhaps at the same time throwing away certain characters, such as punctuation.<br>
+The major question of the tokenization phase is what are the correct tokens to use? In the beggining, it looks fairly trivial: you chop on whitespace and throw away punctuation characters.<br>
+This is a starting point, but even for English there are a number of tricky cases. For example, what do you do about the various uses of the apostrophe for possession and contractions?</p>
 
 </div>
 </div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For many languages tokenization require lexical analysis of the string, because we simply cannot use whitespace</p>
 
 </div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>German: a lot of compund words</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">word_tokenize</span><span class="p">(</span><span class="s2">&quot;Mr. O&#39;Neill thinks that the boys&#39; stories about Chile&#39;s capital aren&#39;t amusing.&quot;</span><span class="p">,</span><span class="s1">&#39;English&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># law for the delegation of monitoring beef labelling</span>
+<span class="n">wordCounter</span><span class="o">.</span><span class="n">CountWords</span><span class="p">(</span><span class="s1">&#39;Rindfleischetikettierungsüberwachungsaufgabenübertragungsgesetz&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13443,28 +13492,13 @@ We will stick to NFKD in this example.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[44]:</div>
+<div class="prompt output_prompt">Out[38]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;Mr.&#39;,
- &#34;O&#39;Neill&#34;,
- &#39;thinks&#39;,
- &#39;that&#39;,
- &#39;the&#39;,
- &#39;boys&#39;,
- &#34;&#39;&#34;,
- &#39;stories&#39;,
- &#39;about&#39;,
- &#39;Chile&#39;,
- &#34;&#39;s&#34;,
- &#39;capital&#39;,
- &#39;are&#39;,
- &#34;n&#39;t&#34;,
- &#39;amusing&#39;,
- &#39;.&#39;]</pre>
+<pre>Counter({&#39;rindfleischetikettierungsüberwachungsaufgabenübertragungsgesetz&#39;: 1})</pre>
 </div>
 
 </div>
@@ -13472,81 +13506,331 @@ We will stick to NFKD in this example.</p>
 </div>
 </div>
 
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Chinese: don't even use spaces</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.tokenize.toktok</span> <span class="k">import</span> <span class="n">ToktokTokenizer</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">wordCounter</span><span class="o">.</span><span class="n">CountWords</span><span class="p">(</span><span class="s1">&#39;中文几乎没有空格&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[39]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Counter({&#39;中文几乎没有空格&#39;: 1})</pre>
 </div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Bad news:</p>
+<ol>
+<li>There is no unified solution for tokenization problem</li>
+<li>You need to know language of your text</li>
+<li>You need to find specific tokenizer for each language<br></li>
+</ol>
+<p>Good news - you can find tokenizers for many languages</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Where to look:</p>
+<ul>
+<li>NLTK: <a href="https://www.nltk.org/api/nltk.tokenize.html">https://www.nltk.org/api/nltk.tokenize.html</a></li>
+<li>Spacy: <a href="https://spacy.io/">https://spacy.io/</a></li>
+<li>Stanford NLP tools: Java tools, can be called in Python through NLTK<ul>
+<li><a href="https://nlp.stanford.edu/software/segmenter.shtml">https://nlp.stanford.edu/software/segmenter.shtml</a></li>
+<li><a href="https://nlp.stanford.edu/software/tokenizer.html">https://nlp.stanford.edu/software/tokenizer.html</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></div></section></section><section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">ToktokTokenizer</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="k">import</span> <span class="n">word_tokenize</span>
+
+<span class="k">class</span> <span class="nc">WordCounterV4</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Get all our unicode sets</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">punctuation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">letters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">numbers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">)</span> <span class="o">=</span> \
+            <span class="n">calculateUnicodeSets</span><span class="p">()</span>
+        <span class="c1"># Translation table to remove punctuation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">punctuationTranslation</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">punctuation</span><span class="p">))</span>
+        <span class="c1"># Translation table to remove control characters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">controlTranslation</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">))</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-</div>
+</div></section></section><section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="s1">&#39;Rindfleischetikettierungsüberwachungsaufgabenübertragungsgesetz&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">WordCounterV4</span><span class="p">(</span><span class="n">WordCounterV4</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">CountWords</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">language</span> <span class="p">):</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+        <span class="c1"># Normalize text</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s2">&quot;NFKD&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="c1"># Remove control characters from string</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">controlTranslation</span><span class="p">)</span>
+        <span class="c1"># Split text using tokenizer</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">text</span> <span class="p">,</span><span class="n">language</span><span class="p">):</span>
+            <span class="c1"># Remove all punctuation</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">punctuationTranslation</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># Skip empty words</span>
+                <span class="k">continue</span>
+            <span class="c1"># Creating set of letters from our word</span>
+            <span class="c1"># that way it will be easier to compare with letters and numbers</span>
+            <span class="n">wordSet</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="c1"># Words that consist only of letters count as words</span>
+            <span class="k">if</span> <span class="n">wordSet</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">letters</span> <span class="p">):</span>
+                <span class="c1"># Using casefold to get more stable case-insensetive variant</span>
+                <span class="n">counter</span><span class="p">[</span><span class="n">word</span><span class="o">.</span><span class="n">casefold</span><span class="p">()]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Words that consist only of digits count as __number__</span>
+            <span class="k">elif</span> <span class="n">wordSet</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">numbers</span> <span class="p">):</span>
+                <span class="n">counter</span><span class="p">[</span><span class="s1">&#39;__number__&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Everything else goes to __other__ bucket</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">counter</span><span class="p">[</span><span class="s1">&#39;__other__&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">counter</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-</div>
+</div></section></section><section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">spacy</span>
-<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
-
-<span class="kn">from</span> <span class="nn">spacy.tokenizer</span> <span class="k">import</span> <span class="n">Tokenizer</span>
-<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span>
-
-<span class="kn">from</span> <span class="nn">spacy.lemmatizer</span> <span class="k">import</span> <span class="n">Lemmatizer</span>
-<span class="n">lemmatizer</span> <span class="o">=</span> <span class="n">Lemmatizer</span><span class="p">()</span>
-
-<span class="n">doc</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="s1">&#39;Rindfleischetikettierungsüberwachungsaufgabenübertragungsgesetz&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">wordCounter</span> <span class="o">=</span> <span class="n">WordCounterV4</span><span class="p">()</span>
+<span class="n">wordCounter</span><span class="o">.</span><span class="n">CountWords</span><span class="p">(</span> <span class="s2">&quot;Mr. O&#39;Neill thinks that the boys&#39; stories about Chile&#39;s capital aren&#39;t amusing.&quot;</span><span class="p">,</span> <span class="s2">&quot;English&quot;</span> <span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[42]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Counter({&#39;about&#39;: 1,
+         &#39;amusing&#39;: 1,
+         &#39;are&#39;: 1,
+         &#39;boys&#39;: 1,
+         &#39;capital&#39;: 1,
+         &#39;chile&#39;: 1,
+         &#39;mr&#39;: 1,
+         &#39;nt&#39;: 1,
+         &#39;oneill&#39;: 1,
+         &#39;s&#39;: 1,
+         &#39;stories&#39;: 1,
+         &#39;that&#39;: 1,
+         &#39;the&#39;: 1,
+         &#39;thinks&#39;: 1})</pre>
 </div>
+
+</div>
+
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Stemming-and-lemmatization">Stemming and lemmatization<a class="anchor-link" href="#Stemming-and-lemmatization">&#182;</a></h3><p>For grammatical reasons, documents are going to use different forms of a word, such as <em>organize</em>, <em>organizes</em>, and <em>organizing</em>. Additionally, there are families of derivationally related words with similar meanings, such as <em>democracy</em>, <em>democratic</em>, and <em>democratization</em>.<br>
+<strong>Stemming</strong> usually refers to a crude heuristic process that chops off the ends of words in the hope of achieving this goal correctly most of the time, and often includes the removal of derivational affixes.<br>
+<strong>Lemmatization</strong> usually refers to doing things properly with the use of a vocabulary and morphological analysis of words, normally aiming to remove inflectional endings only and to return the base or dictionary form of a word, which is known as the lemma.<br>
+If confronted with the token <em>saw</em>, stemming might return just <em>s</em>, whereas lemmatization would attempt to return either <em>see</em> or <em>saw</em> depending on whether the use of the token was as a verb or a noun.</p>
+
+</div>
+</div>
+</div></section></section><section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">([(</span><span class="n">w</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">pos_</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="k">import</span> <span class="n">word_tokenize</span>
+<span class="kn">from</span> <span class="nn">nltk.stem.snowball</span> <span class="k">import</span> <span class="n">SnowballStemmer</span>
+
+<span class="k">class</span> <span class="nc">WordCounterV5</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Get all our unicode sets</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">punctuation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">letters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">numbers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">)</span> <span class="o">=</span> \
+            <span class="n">calculateUnicodeSets</span><span class="p">()</span>
+        <span class="c1"># Translation table to remove punctuation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">punctuationTranslation</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">punctuation</span><span class="p">))</span>
+        <span class="c1"># Translation table to remove control characters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">controlTranslation</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">))</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">WordCounterV5</span><span class="p">(</span><span class="n">WordCounterV5</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">CountWords</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">language</span> <span class="p">):</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+        <span class="c1"># Stemmer for our words</span>
+        <span class="n">stemmer</span> <span class="o">=</span> <span class="n">SnowballStemmer</span><span class="p">(</span><span class="n">language</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="c1"># Normalize text</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s2">&quot;NFKD&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="c1"># Remove control characters from string</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">controlTranslation</span><span class="p">)</span>
+        <span class="c1"># Split text using tokenizer</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">text</span> <span class="p">,</span><span class="n">language</span><span class="p">):</span>
+            <span class="c1"># Remove all punctuation</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">punctuationTranslation</span><span class="p">)</span>
+            <span class="c1"># Stemming word</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">stemmer</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># Skip empty words</span>
+                <span class="k">continue</span>
+            <span class="c1"># Creating set of letters from our word</span>
+            <span class="c1"># that way it will be easier to compare with letters and numbers</span>
+            <span class="n">wordSet</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="c1"># Words that consist only of letters count as words</span>
+            <span class="k">if</span> <span class="n">wordSet</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">letters</span> <span class="p">):</span>
+                <span class="c1"># Using casefold to get more stable case-insensetive variant</span>
+                <span class="n">counter</span><span class="p">[</span><span class="n">word</span><span class="o">.</span><span class="n">casefold</span><span class="p">()]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Words that consist only of digits count as __number__</span>
+            <span class="k">elif</span> <span class="n">wordSet</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">numbers</span> <span class="p">):</span>
+                <span class="n">counter</span><span class="p">[</span><span class="s1">&#39;__number__&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Everything else goes to __other__ bucket</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">counter</span><span class="p">[</span><span class="s1">&#39;__other__&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">counter</span>
+</pre></div>
+
 </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">wordCounter</span> <span class="o">=</span> <span class="n">WordCounterV5</span><span class="p">()</span>
+<span class="n">wordCounter</span><span class="o">.</span><span class="n">CountWords</span><span class="p">(</span> <span class="s2">&quot;Mr. O&#39;Neill thinks that the boys&#39; stories about Chile&#39;s capital aren&#39;t amusing.&quot;</span><span class="p">,</span> <span class="s2">&quot;English&quot;</span> <span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[45]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Counter({&#39;about&#39;: 1,
+         &#39;amus&#39;: 1,
+         &#39;are&#39;: 1,
+         &#39;boy&#39;: 1,
+         &#39;capit&#39;: 1,
+         &#39;chile&#39;: 1,
+         &#39;mr&#39;: 1,
+         &#39;nt&#39;: 1,
+         &#39;oneil&#39;: 1,
+         &#39;s&#39;: 1,
+         &#39;stori&#39;: 1,
+         &#39;that&#39;: 1,
+         &#39;the&#39;: 1,
+         &#39;think&#39;: 1})</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="That's-all-folks">That's all folks<a class="anchor-link" href="#That's-all-folks">&#182;</a></h3><p>This notebook: <a href="https://github.com/TonyMas/GlobalText/">https://github.com/TonyMas/GlobalText/</a><br>
+This presentation: <a href="https://tonymas.github.io/GlobalText/">https://tonymas.github.io/GlobalText/</a><br></p>
+
+</div>
+</div>
+</div></section></section>
 </div>
 </div>
 
